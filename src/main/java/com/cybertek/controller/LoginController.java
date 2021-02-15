@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LoginController {
 	
-	@RequestMapping
+	@RequestMapping(value = {"/login","/"})//SecurityConfig de logout olurken /logine yonlendiriyoruz o yuzden burada onu da ekledik
 	public String login(){
 		return "login";
 	}

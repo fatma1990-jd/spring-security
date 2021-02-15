@@ -12,6 +12,7 @@ import com.cybertek.service.ProjectService;
 import com.cybertek.service.TaskService;
 import com.cybertek.service.UserService;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -84,7 +85,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> listAllProjectDetails() {
-        UserDTO currentUserDto = userService.findByUserName("java@cybertekschool.com");
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();//headerHTML de sec:authentication="name" burdan veriyi aliyor
+        UserDTO currentUserDto = userService.findByUserName(username);
         User user = userMapper.convertToEntity(currentUserDto);
         List<Project> list = projectRepository.findAllByAssignedManager(user);
 
@@ -101,5 +103,14 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectDTO> readAllByAssignedManager(User user) {
         List<Project> list = projectRepository.findAllByAssignedManager(user);
         return list.stream().map(obj ->projectMapper.convertToDto(obj)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProjectDTO> listAllNonCompletedProjects() {
+
+        return projectRepository.findAllByProjectStatusIsNot(Status.COMPLETE)
+                .stream()
+                .map(project -> projectMapper.convertToDto(project))
+                .collect(Collectors.toList());
     }
 }

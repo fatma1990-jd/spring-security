@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
+@EntityListeners(BaseEntityListener.class)
 public  class BaseEntity {
 
     @Id
@@ -30,19 +31,19 @@ public  class BaseEntity {
     private Long lastUpdateUserId;
 
     private Boolean isDeleted = false;
-
-    @PrePersist
-    private void onPrePersist(){
-        this.insertDateTime=LocalDateTime.now();
-        this.lastUpdateDateTime=LocalDateTime.now();
-        this.insertUserId=1L;
-        this.lastUpdateUserId=1L;
-    }
-
-    @PreUpdate
-    private void onPreUpdate(){
-        this.lastUpdateDateTime= LocalDateTime.now();
-        this.lastUpdateUserId=1L;
-    }
+//bu methodlari burdan sildik cunku injection yapamiyoruz baseentity den baseentitylistener i olusturup orda tanimladik
+//    @PrePersist
+//    private void onPrePersist(){
+//        this.insertDateTime=LocalDateTime.now();
+//        this.lastUpdateDateTime=LocalDateTime.now();
+//        this.insertUserId=1L;
+//        this.lastUpdateUserId=1L;
+//    }
+//
+//    @PreUpdate
+//    private void onPreUpdate(){
+//        this.lastUpdateDateTime= LocalDateTime.now();
+//        this.lastUpdateUserId=1L;
+//    }
 
 }

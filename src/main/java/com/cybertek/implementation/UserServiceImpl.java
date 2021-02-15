@@ -12,6 +12,7 @@ import com.cybertek.service.TaskService;
 import com.cybertek.service.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,12 +26,14 @@ public class UserServiceImpl implements UserService {
     private ProjectService projectService;
     private TaskService taskService;
     private MapperUtil mapperUtil;
+    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, @Lazy ProjectService projectService, TaskService taskService, MapperUtil mapperUtil) {
+    public UserServiceImpl(UserRepository userRepository, @Lazy ProjectService projectService,TaskService taskService, MapperUtil mapperUtil, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.projectService = projectService;
         this.taskService = taskService;
         this.mapperUtil = mapperUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -47,8 +50,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserDTO dto) {
-        User obj =  mapperUtil.convert(dto,new User());
-        userRepository.save(obj);
+      User foundUser = userRepository.findByUserName(dto.getUserName());
+      dto.setEnabled(true);//eger koymazsak tanimlamadigimiz icin error verir
+
+      User object = mapperUtil.convert(dto,new User());
+      object.setPassWord(passwordEncoder.encode(object.getPassWord()));//DB de encoded sekilde kaydedebilirim bir tek
+      userRepository.save(object);
     }
 
     @Override
@@ -58,6 +65,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserName(dto.getUserName());
         //Map update user dto to entity object
         User convertedUser = mapperUtil.convert(dto,new User());
+        convertedUser.setPassWord(passwordEncoder.encode(convertedUser.getPassWord()));
+        convertedUser.setEnabled(true);//update ten sonra tekrar update edilen user ile sisteme girebilmek icin
         //set id to the converted object
         convertedUser.setId(user.getId());
         //save updated user
