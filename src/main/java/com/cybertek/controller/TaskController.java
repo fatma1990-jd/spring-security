@@ -41,7 +41,7 @@ public class TaskController {
 
 
     @PostMapping("/create")
-    public String insertTask(@ModelAttribute("task")TaskDTO task, Model model){
+    public String insertTask(@ModelAttribute("task")TaskDTO task, Model model){//Model a ihtiyac var mi
 //        task.setTaskStatus(Status.OPEN);
 //        task.setAssignedDate(LocalDate.now());
 //        task.setId(UUID.randomUUID().getMostSignificantBits());
