@@ -79,6 +79,7 @@ pipeline {
         stage('Init DB'){
             steps {
                 sh '''
+                    sleep 30
                     echo "hello"
                     docker cp ./src/main/resources/data.sql jd-ticketing_db_1:/data.sql
                     docker exec -u postgres jd-ticketing_db_1 psql cybertek postgres -f /data.sql
