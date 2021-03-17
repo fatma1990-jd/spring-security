@@ -1,11 +1,5 @@
-FROM openjdk:11-jdk
-COPY ./target/cybertek-0.0.1-SNAPSHOT.jar /usr/app/
-WORKDIR /usr/app
-RUN sh -c 'touch cybertek-0.0.1-SNAPSHOT.jar'
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","cybertek-0.0.1-SNAPSHOT.jar"]
-
-
-
-
-
+FROM adoptopenjdk/openjdk11 as build
+#FROM openjdk:8-jdk-alpine as build
+MAINTAINER cybertek.com
+COPY  jd-ticketing.jar /
+ENTRYPOINT ["java","-jar","/jd-ticketing.jar"]
