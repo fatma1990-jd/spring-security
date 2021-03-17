@@ -8,12 +8,12 @@ public class LoginController {
 	
 	@RequestMapping(value = {"/login","/"})//SecurityConfig de logout olurken /logine yonlendiriyoruz o yuzden burada onu da ekledik
 	public String login(){
-		return "/login";
+		return "login";
 	}
 	
 	@RequestMapping("/welcome")
 	public String welcome(){
-		return "/welcome";
+		return "welcome";
 	}
 
 }
