@@ -31,7 +31,7 @@ pipeline {
         }
         stage('docker image') {
             steps {
-                sh 'mv /var/lib/jenkins/workspace/jd-ticketing/target/SpringMVC-ProjectManagement-0.0.1-SNAPSHOT.jar /var/lib/jenkins/workspace/jd-ticketing/jd-ticketing.jar'
+                sh 'mv /var/lib/jenkins/workspace/jd-ticketing/target/cybertek-0.0.1-SNAPSHOT.jar /var/lib/jenkins/workspace/jd-ticketing/jd-ticketing.jar'
                 sh ' ls -la'
                 echo 'hello docker'
                 sh 'echo $(pwd)'
